@@ -1,7 +1,20 @@
-var results = {"id":"10", "class": "child-of-9", "name": "Nenad"}
-
-for (const key in results){
-
-      console.log(`${key} : ${results[key]}`)
-
+function myDisplay(value) {
+      document.getElementById("demo").innerHTML = value;
 }
+
+function getFile(myCallback) {
+      fetch('/mycar.html', {
+            method: 'GET',
+        }).then(function(res) {
+            return res.text();
+        }).then(function(data) {
+            var parser = new DOMParser();
+            var doc = parser.parseFromString(data, "text/html");
+            var innerHTML = doc.getElementsByTagName('body')[0].innerHTML;
+            myCallback(innerHTML);
+        }).catch(function () {
+            myCallback("Error!")
+        });
+}
+
+getFile(myDisplay);
