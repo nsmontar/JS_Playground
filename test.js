@@ -3,18 +3,28 @@ function myDisplay(value) {
 }
 
 function getFile(myCallback) {
-      fetch('/mycar.html', {
-            method: 'GET',
-        }).then(function(res) {
-            return res.text();
-        }).then(function(data) {
-            var parser = new DOMParser();
-            var doc = parser.parseFromString(data, "text/html");
-            var innerHTML = doc.getElementsByTagName('body')[0].innerHTML;
-            myCallback(innerHTML);
-        }).catch(function () {
-            myCallback("Error!")
-        });
+      fetch('mycar.html').then(function(response) {
+            return response.text();
+      }).then(function(html) {
+            myCallback(html);
+      }).catch(function(error) {
+            console.log('Something went wrong. ', error);
+      });
 }
+
+
+function getFile2(myCallback) {
+      let request = new XMLHttpRequest();
+      request.open("GET", "mycar.html");
+      request.onload = function() {
+            if(request.status == 200) {
+                  myCallback(request.responseText);
+            } else {
+                  myCallback("Error: " + request.status)
+            }
+      }
+      request.send();
+}
+
 
 getFile(myDisplay);
